@@ -1,0 +1,35 @@
+﻿@model IEnumerable<MyShop.Core.Models.Product>
+    @{
+    ViewBag.Title = "Index";
+    }
+
+    <h2>Product List</h2>
+
+    @foreach(var item in Model)
+    {
+
+    <div class="col-md-4" style="height: 450px; padding: 10px; margin: 10px; border: solid thin whitesmoke;">
+
+        <div class="col-md-12">
+            <img class="img" style="height:150px; width: 150px;" src="~/Content/ProductImages/@item.Image" />
+        </div>
+
+
+        <div class="col-md-12">
+            @Html.ActionLink(item.Name, "Details", new { id = item.Id })
+        </div>
+
+        <div class="col-md-12">
+            <p>@item.Description</p>
+        </div>
+        <div class="col-md-12">
+            <h4>$@item.Price</h4>
+        </div>
+        <div class="col-md-12">
+            <a href="@Url.Action("AddToBasket","Basket", new {Id=item.Id})" class="btn btn-primary">Add to Cart</a>
+        </div>
+
+    </div>
+    }
+
+
