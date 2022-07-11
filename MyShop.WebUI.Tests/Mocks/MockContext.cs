@@ -24,17 +24,19 @@ namespace MyShop.WebUI.Tests.Mocks
             return;
         }
 
-        public void Insert(T t)
+        public T Insert(T t)
         {
             items.Add(t);
+            return t;
         }
 
-        public void Update(T t)
+        public T Update(T t)
         {
             T tToUpdate = items.Find(i => i.Id == t.Id);
             if (tToUpdate != null)
             {
                 tToUpdate = t;
+                return tToUpdate;
             }
 
             else

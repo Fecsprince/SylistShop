@@ -4,42 +4,51 @@
     ViewBag.Title = Model.Name + " Details";
 }
 
-<h2>@Model.Name</h2>
 
-<div>
-    <hr />
-
-    <div class="col-md-2">
-        <img class="img-responsive" src="~/Content/ProductImages/@Model.Image" />
-    </div>
-
-    <div class="col-md-10">
-        <dl class="dl-horizontal">
+<div id="bucket">
+    <div class="row">
+        <h2 id="guideBucket">@Model.Name</h2>
 
 
+        <hr />
 
-            <dt>
-                @Html.DisplayNameFor(model => model.Description)
-            </dt>
+        <div class="col-md-6">
+            <div class="col-md-3">
+                <img class="img-responsive center-block img-thumbnail" height="50" width="80" src="~/Content/ProductImages/@Model.Image1" />
+            </div>
+            <div class="col-md-3">
+                <img class="img-responsive center-block img-thumbnail" height="50" width="80" src="~/Content/ProductImages/@Model.Image2" />
+            </div>
+        </div>
 
-            <dd>
-                @Html.DisplayFor(model => model.Description)
-            </dd>
+        <div class="col-md-6 col-sm-6">
+            <dl class="dl-horizontal">
 
-            <dt>
-                @Html.DisplayNameFor(model => model.Price)
-            </dt>
 
-            <dd>
-                $@Html.DisplayFor(model => model.Price)
-            </dd>
 
-            <dt></dt>
-           <dd><a href="@Url.Action("AddToBasket","Basket", new {Id =Model.Id})" class="btn btn-default">Add to Basket</a></dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Description)
+                </dt>
 
-            <dt></dt>
-            <dd> @Html.ActionLink("Back to List", "Index")</dd>
-        </dl>
+                <dd>
+                    @Html.DisplayFor(model => model.Description)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Price)
+                </dt>
+
+                <dd>
+                    $@Html.DisplayFor(model => model.Price)
+                </dd>
+
+                <dt></dt>
+                <dd><a href="@Url.Action("AddToBasket","Basket", new {Id =Model.Id})" class="btn btn-primary">Add to Basket</a></dd>
+
+                <dt></dt>
+                <dd> @Html.ActionLink("Back to List", "Index")</dd>
+            </dl>
+        </div>
     </div>
 </div>
 

@@ -4,29 +4,37 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<div id="bucket">
+    <h2 id="guideBucket">Product Category</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th></th>
-    </tr>
+    <p>
+        @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+    </p>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Edit","ProductCategoryManager", new {@id = item.Id })" class="btn btn-success"><span class="glyphicon glyphicon-pencil"></span> </a>
+                        <a href="@Url.Action("Delete","ProductCategoryManager", new {@id = item.Id })" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> </a>
 
-</table>
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>

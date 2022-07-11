@@ -1,0 +1,58 @@
+﻿@model MyShop.Core.Models.Shop
+
+
+@{
+    ViewBag.Title = "Details";
+}
+
+@if (Model != null)
+{
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3>@Model.Name</h3>
+                </div>
+                <div class="panel-body">
+
+                    <div class="text-center">
+
+                        <img class="img-rounded" src="~/Content/ShopImages/@Model._Image1" width="150" height="150" />
+
+                        <img class="img-rounded" src="~/Content/ShopImages/@Model._Image2" width="150" height="150" />
+
+
+                    </div>
+                    <h3>Shop Information</h3>
+                    <hr />
+                    <h5>Created By <b>@Model.UserID on @Model.CreatedAt</b></h5>
+                    <h5>Location: <b>@Model.Location</b></h5>
+                    <h5>LGA: <b>@Model.LGA</b></h5>
+                    <h5>PostCode: <b>@Model.PostCode</b></h5>
+                    <h5>State: <b>@Model.State</b></h5>
+                    <h5>Primary Contact: <b>@Model.Contact1</b></h5>
+                    <h5>Secondary Contact: <b>@Model.Contact1</b></h5>
+                    <h5>Working Days: <b>@Model.Days</b></h5>
+                    <h5>Working Hour: from <b>@Model.OpeningHour</b> to <b>@Model.ClosingHour</b></h5>
+                    <br />
+                    <hr />
+                    <a href="@Url.Action("Index","Home", new {@serviceLocation = Model.Id })" >View our Services</a>
+                </div>
+
+                <div class="panel-footer text-center">
+                    <a href="@Url.Action("Index","ShopManager")" class="btn btn-success"><span class="glyphicon glyphicon-backward"></span> </a>
+                    <a href="@Url.Action("Edit","ShopManager", new {@id = Model.Id })" class="btn btn-success"><span class="glyphicon glyphicon-pencil"></span> </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+}
+
+
+

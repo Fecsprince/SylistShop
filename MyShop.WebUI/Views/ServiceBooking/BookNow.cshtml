@@ -1,0 +1,65 @@
+﻿@model MyShop.Core.Models.Booking
+
+@{
+    ViewBag.Title = "Book Now";
+}
+
+<div id="bucket">
+    @using (Html.BeginForm("BookNow","ServiceBooking",FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h3 id="guideBucket">Booking</h3>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        @Html.HiddenFor(x => x.Id)
+        @Html.HiddenFor(x => x.ServiceID)
+        @Html.HiddenFor(x => x.ShopName)
+        @Html.HiddenFor(x => x.Address)
+        @Html.HiddenFor(x => x.UserID)
+
+
+        <div class="col-md-12">
+            <div class="jumbotron">
+                <h3>@Model.ShopName</h3>
+                <p>Address: @Model.Address</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.AppointmentDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.EditorFor(model => model.AppointmentDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.AppointmentDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.AppointmentTime, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                <span class="text-info"> @ViewBag.OpeningTime - @ViewBag.ClosingTime</span>
+                @Html.DropDownListFor(x => x.AppointmentTime, new SelectList(ViewBag.TimeList, "TimeLabel", "TimeLabel"), "Select Time",
+                htmlAttributes: new { @class = "form-control" })
+
+                @Html.ValidationMessageFor(model => model.AppointmentTime, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Book Now" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+    }
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

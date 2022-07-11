@@ -9,7 +9,7 @@ namespace MyShop.Core.Contracts
         void Commit();
         void Delete(string Id);
         T Find(string Id);
-        void Insert(T t);
-        void Update(T t);
+        T Insert(T t);
+        T Update(T t);
     }
 }

@@ -60,6 +60,26 @@
     <Compile Include="Migrations\202207061236232_initial.designer.cs">
       <DependentUpon>202207061236232_initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202207080646259_updatex.cs" />
+    <Compile Include="Migrations\202207080646259_updatex.designer.cs">
+      <DependentUpon>202207080646259_updatex.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202207091744089_updatexy.cs" />
+    <Compile Include="Migrations\202207091744089_updatexy.designer.cs">
+      <DependentUpon>202207091744089_updatexy.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202207101850058_latestux.cs" />
+    <Compile Include="Migrations\202207101850058_latestux.designer.cs">
+      <DependentUpon>202207101850058_latestux.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202207101920534_latestui.cs" />
+    <Compile Include="Migrations\202207101920534_latestui.designer.cs">
+      <DependentUpon>202207101920534_latestui.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202207111311223_Recent.cs" />
+    <Compile Include="Migrations\202207111311223_Recent.designer.cs">
+      <DependentUpon>202207111311223_Recent.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SQLRepository.cs" />
@@ -77,6 +97,21 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202207061236232_initial.resx">
       <DependentUpon>202207061236232_initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202207080646259_updatex.resx">
+      <DependentUpon>202207080646259_updatex.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202207091744089_updatexy.resx">
+      <DependentUpon>202207091744089_updatexy.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202207101850058_latestux.resx">
+      <DependentUpon>202207101850058_latestux.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202207101920534_latestui.resx">
+      <DependentUpon>202207101920534_latestui.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202207111311223_Recent.resx">
+      <DependentUpon>202207111311223_Recent.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -91,6 +91,8 @@ namespace MyShop.WebUI.Models
         public string State { get; set; }
         [Required]
         public string Zipcode { get; set; }
+        [Required]
+        public string PhoneNumber { get; set; }
     }
 
     public class ResetPasswordViewModel

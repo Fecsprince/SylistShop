@@ -1,0 +1,81 @@
+﻿@model IEnumerable<MyShop.Core.Models.Shop>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+@if (ViewBag.msg != null)
+{
+    <p id="msg" style="display:none">@ViewBag.Msg</p>
+}
+<div id="bucket">
+    <h2>Shop Listing</h2>
+
+    <a href="@Url.Action("Create","ShopManager")" class="btn btn-primary">New Shop</a>
+    <br />
+    <br />
+
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Image
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Location)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Contact1)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.UserID)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <img class="img-thumbnail" style="width:50px; height:50px" src="~/Content/ShopImages/@item.Image1" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Location)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Contact1)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserID)
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Details","ShopManager", new {@id = item.Id })" class="btn btn-success"><span class="glyphicon glyphicon-folder-open"></span> </a>
+                        <a href="@Url.Action("Edit","ShopManager", new {@id = item.Id })" class="btn btn-success"><span class="glyphicon glyphicon-pencil"></span> </a>
+
+
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script>
+    $(document).ready(function () {
+
+        var Smsg = $("#msg").text();
+        if (Smsg != "") {
+            alert(Smsg);
+        }
+    });
+
+</script>

@@ -1,56 +1,83 @@
 ﻿@model IEnumerable<MyShop.Core.Models.Product>
 
-    @{
+@{
     ViewBag.Title = "Index";
-    }
+}
 
-    <h2>Index</h2>
 
-    <p>
-        @Html.ActionLink("Create New", "Create")
-    </p>
-    <table class="table">
-        <tr>
-            <th>
-                Image
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Category)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th></th>
-        </tr>
+@if (ViewBag.msg != null)
+{
+    <p id="msg" style="display:none">@ViewBag.Msg</p>
+}
+<div id="bucket">
+    <h2>Product Listing</h2>
 
-        @foreach (var item in Model) {
-        <tr>
-            <td>
-                <img class="img-thumbnail" style="width:50px; height:50px" src="~/Content/ProductImages/@item.Image" />
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-            </td>
-        </tr>
+    <a href="@Url.Action("Create","ProductManager")" class="btn btn-primary">Add Product</a>
+    <br />
+    <br />
+
+    <div class="table-responsive">
+        <table class="table table-responsive">
+            <thead>
+                <tr>
+                    <th>
+                        Image
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Description)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Category)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Price)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <img class="img-thumbnail" style="width:50px; height:50px" src="~/Content/ProductImages/@item.Image1" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Details","ProductManager", new {@id = item.Id })" class="btn btn-success"><span class="glyphicon glyphicon-folder-open"></span> </a>
+                        <a href="@Url.Action("Edit","ProductManager", new {@id = item.Id })" class="btn btn-success"><span class="glyphicon glyphicon-pencil"></span> </a>
+                        <a href="@Url.Action("Delete","ProductManager", new {@id = item.Id })" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> </a>
+
+
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script>
+    $(document).ready(function () {
+
+        var Smsg = $("#msg").text();
+        if (Smsg != "") {
+            alert(Smsg);
         }
+    });
 
-    </table>
+</script>

@@ -1,0 +1,47 @@
+﻿
+@{
+    ViewBag.Title = "Booking";
+}
+
+<div id="bucket">
+    @if (ViewBag.Msg != null)
+    {
+        <p style="display:none" id="msg">@ViewBag.Msg</p>
+    }
+
+    <h2 id="guideBucket">Find My Booking</h2>
+
+    @using (Html.BeginForm("Booking", "ServiceBooking", FormMethod.Post))
+    {
+        <div class="jumbotron">
+            <div class="row">
+                <div class="col-xs-12">
+                    <label class="control-label">Booking ID</label>
+                </div>
+                <div class="col-xs-12">
+                    <input type="text" class="form-control" name="bookingId" id="bookingId"
+                           placeholder="Copy your booking ID from the email you received after service booking" />
+                    <br />
+                </div>
+
+                <div class="col-xs-12">
+                    <input type="submit" value="Find" class="btn btn-primary" />
+
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script>
+    $(document).ready(function () {
+
+        var Smsg = $("#msg").text();
+        if (Smsg != "") {
+            alert(Smsg);
+        }
+    });
+
+</script>

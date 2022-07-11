@@ -2,27 +2,29 @@
     ViewBag.Title = "Thank You";
 }
 
-<h2>Thank You</h2>
-<div class="panel panel-primary">
-    <div class="panel-heading">
-        <h2 class="panel-title">Payment</h2>
+<div id="bucket">
+    <h2 id="guideBucket">Thank You</h2>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h2 class="panel-title">Payment</h2>
+        </div>
+        <div class="panel-body panel-success">
+            <h3 class="text-center">
+                Dear valued customer, please make your payment through the account details below;
+                <br />Note: provide the order Id while making your payment
+            </h3>
+            <h2>Bank:<b>United Bank of Africa</b> </h2>
+            <h2>Account number:<b>3482938473</b> </h2>
+            <h2>Account Name:<b>First Name Last Name</b> </h2>
+            <h2>Transaction Note:<b>@ViewBag.OrderId</b> </h2>
+        </div>
+        <div class="panel-footer">
+            <p class="text-center">Your order Id is :<b>@ViewBag.OrderId</b></p>
+        </div>
     </div>
-    <div class="panel-body panel-success">
-        <h3 class="text-center">
-            Dear valued customer, please make your payment through the account details below;
-            <br />Note: provide the order Id while making your payment
-        </h3>
-        <h2>Bank:<b>United Bank of Africa</b> </h2>
-        <h2>Account number:<b>3482938473</b> </h2>
-        <h2>Account Name:<b>First Name Last Name</b> </h2>
-        <h2>Transaction Note:<b>@ViewBag.OrderId</b> </h2>
-    </div>
-    <div class="panel-footer">
-        <p class="text-center">Your order Id is :<b>@ViewBag.OrderId</b></p>
-    </div>
+    Thank you for your order
+    <br />
+    <br />
 </div>
-Thank you for your order
-<br />
-<br />
 
 

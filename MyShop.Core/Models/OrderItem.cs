@@ -11,7 +11,8 @@ namespace MyShop.Core.Models
         public string ProductId { get; set; }
         public string OrderId { get; set; }
         public string ProductName { get; set; }
-        public string  Image { get; set; }
+        public string  Image1 { get; set; }
+        public string Image2 { get; set; }
         public int Quantity { get; set; }
         public decimal Price { get; set; }
     }

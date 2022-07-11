@@ -22,7 +22,10 @@ namespace MyShop.Core.Models
 
         [Display(Name = "Appointment Date")]
         [Required]
+        [DataType(DataType.Date)]
         public DateTime AppointmentDate { get; set; }
+
+        //public string  Date { get; set; } 
 
         [Display(Name = "Appointment Time")]
         [Required]
@@ -31,6 +34,8 @@ namespace MyShop.Core.Models
         [Display(Name = "Address")]
         [StringLength(100, ErrorMessage = "Address character maximum length is 100!")]
         public string Address { get; set; }
+        [NotMapped]
+        public string ShopName { get; set; } 
 
 
         //REFERENCES

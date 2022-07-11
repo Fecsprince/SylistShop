@@ -11,6 +11,7 @@ using Microsoft.Owin.Security;
 using MyShop.WebUI.Models;
 using MyShop.Core.Models;
 using MyShop.Core.Contracts;
+using MyShop.Core.Supports;
 
 namespace MyShop.WebUI.Controllers
 {
@@ -21,9 +22,9 @@ namespace MyShop.WebUI.Controllers
         private ApplicationUserManager _userManager;
         private IRepository<Customer> customerRepo;
 
-      
 
-        public AccountController( IRepository<Customer> customerRepository)
+
+        public AccountController(IRepository<Customer> customerRepository)
         {
             this.customerRepo = customerRepository;
         }
@@ -34,9 +35,9 @@ namespace MyShop.WebUI.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -120,7 +121,7 @@ namespace MyShop.WebUI.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -151,13 +152,14 @@ namespace MyShop.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, PhoneNumber = model.PhoneNumber };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-
+                    string msg = "";
                     //Register Customer
-                    Customer customer = new Customer() {
+                    Customer customer = new Customer()
+                    {
                         FirstName = model.FirstName,
                         LastName = model.LastName,
                         City = model.City,
@@ -170,15 +172,31 @@ namespace MyShop.WebUI.Controllers
 
                     customerRepo.Insert(customer);
                     customerRepo.Commit();
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code}, protocol: Request.Url.Scheme);
 
-                    return RedirectToAction("Index", "Home");
+
+                    //IF IT GETS HERE, CREATE ACCOUNT FOR INSTITUTION SUPERVISOR
+                    //SEND EMAIL
+
+                    IdentityMessage idMes = new IdentityMessage()
+                    {
+                        Destination = model.Email,
+                        Subject = "Confirm Account"
+                    };
+
+                    string html = "Please complete your account registration by clicking <a href=\"" + callbackUrl + "\">here</a>";
+
+                    MailHelper sendMail = new MailHelper();
+                    ConfirmEmailSend sendMsg = sendMail.SendMail(idMes, html);
+
+                    msg = "Your account registration was successful. " +
+                        "Please check your email for verification and activation." + sendMsg.Message;
+                    return RedirectToAction("SentMail", new { @msg = msg });
                 }
                 AddErrors(result);
             }
@@ -186,6 +204,19 @@ namespace MyShop.WebUI.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
+
+        [AllowAnonymous]
+        public ActionResult SentMail(string msg)
+        {
+            if (msg != null)
+            {
+                ViewBag.msg = msg;
+                return View();
+            }
+            return RedirectToAction("Home", "Index");
+
+        }
+
 
         //
         // GET: /Account/ConfirmEmail

@@ -1,0 +1,56 @@
+﻿@model MyShop.Core.Models.Product
+
+
+@{
+    ViewBag.Title = "Details";
+}
+
+@if (Model != null)
+{
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3>@Model.Name</h3>
+                </div>
+                <div class="panel-body">
+
+                    <div class="text-center">
+
+                        <img class="img-rounded" src="~/Content/ProductImages/@Model._Image1" width="150" height="150" />
+
+                        <img class="img-rounded" src="~/Content/ProductImages/@Model._Image2" width="150" height="150" />
+
+
+                    </div>
+                    <h4>Other Details</h4>
+                    <h5>Product Category</h5>
+                    <p><b>@Model.Category.Name</b></p>
+                    <h5>Description</h5>
+                    <p><b>@Model.Description</b></p>
+                    <h5>Created by</h5>
+                    <p><b>@Model.UserID</b></p>
+                    <h5>Date Created</h5>
+                    <p><b>@Model.CreatedAt</b></p>
+                    <br />
+                    <a href="@Url.Action("AddToBasket","Basket", new {Id=Model.Id})" class="btn btn-primary">Add To Cart</a>
+                </div>
+
+                <div class="panel-footer text-center">
+
+                    <a href="@Url.Action("Edit","ProductManager", new {@id = Model.Id })" class="btn btn-success"><span class="glyphicon glyphicon-pencil"></span> </a>
+                    <a href="@Url.Action("Delte","ProductManager", new {@id = Model.Id })" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+}
+
+
+

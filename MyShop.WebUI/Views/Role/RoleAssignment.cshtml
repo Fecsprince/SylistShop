@@ -1,0 +1,20 @@
+﻿
+@{
+    ViewBag.Title = "RoleAssignment";
+}
+
+<div id="bucket">
+    <h2 id="guideBucket">Role Assignment</h2>
+    @using (Html.BeginForm("RoleAssignment", "Role", FormMethod.Post))
+    {
+        <div class="form-group">
+            <strong>Select User:</strong> @Html.DropDownList("userId", ViewBag.userId as SelectList, "", new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            <strong>Select Role:</strong> @Html.DropDownList("role", ViewBag.RoleId as SelectList, "", new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Assign" class="btn btn-primary" />
+        </div>
+    }
+</div>

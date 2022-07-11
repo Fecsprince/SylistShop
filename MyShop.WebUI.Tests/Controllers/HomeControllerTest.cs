@@ -19,12 +19,14 @@ namespace MyShop.WebUI.Tests.Controllers
         public void IndexPageDoesReturnProduct()
         {
             IRepository<Product> productContext = new Mocks.MockContext<Product>();
+            IRepository<Service> serviceContext = new Mocks.MockContext<Service>();
+            IRepository<Shop> shopContext = new Mocks.MockContext<Shop>();
             IRepository<ProductCategory> productCategoryContext = new Mocks.MockContext<ProductCategory>();
-            HomeController controller = new HomeController(productContext, productCategoryContext);
+            HomeController controller = new HomeController(productContext, serviceContext, shopContext, productCategoryContext);
 
             productContext.Insert(new Product());
 
-            var result = controller.Index() as ViewResult;
+            var result = controller.Index(serviceLocation: "") as ViewResult;
             var viewModel = (ProductViewListViewModel)result.ViewData.Model;
 
             Assert.AreEqual(1, viewModel.Products.Count());
@@ -33,6 +35,6 @@ namespace MyShop.WebUI.Tests.Controllers
 
         }
 
-      
+
     }
 }

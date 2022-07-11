@@ -24,7 +24,8 @@ namespace MyShop.Services
                 OrderItem ordi = new OrderItem()
                 {
                     ProductId = item.Id,
-                    Image = item.Image,
+                    Image1 = item.Image1,
+                    Image2 = item.Image2,
                     ProductName = item.ProductName,
                     Quantity = item.Quantity,
                     Price = item.Price

@@ -10,7 +10,7 @@ using System.Web;
 
 namespace MyShop.Services
 {
-    public class BasketService : IBasketService
+    public class ServiceBasket : IBasketService
     {
 
         IRepository<Product> productContext;
@@ -19,7 +19,7 @@ namespace MyShop.Services
         public const string BasketServiceName = "eCommerceBaket";
 
         //CLASS CONSTRUCTOR
-        public BasketService(IRepository<Product> ProductContext, IRepository<Basket> BasketContext)
+        public ServiceBasket(IRepository<Product> ProductContext, IRepository<Basket> BasketContext)
         {
             this.basketContext = BasketContext;
             this.productContext = ProductContext;
@@ -126,7 +126,8 @@ namespace MyShop.Services
                                   ProductName = p.Name,
                                   Price = p.Price,
                                   Quantity = b.Quantity,
-                                  Image = p.Image
+                                  Image1 = p.Image1,
+                                  Image2 = p.Image2
                               }).ToList();
 
                 return result;

@@ -204,6 +204,12 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ProductCategoryManagerController.cs" />
     <Compile Include="Controllers\ProductManagerController.cs" />
+    <Compile Include="Controllers\RoleController.cs" />
+    <Compile Include="Controllers\ServiceManagerController.cs" />
+    <Compile Include="Controllers\ShopManagerController.cs" />
+    <Compile Include="Controllers\ServiceBookingController.cs" />
+    <Compile Include="Controllers\Waiting2Controller.cs" />
+    <Compile Include="Controllers\Waiting3Controller.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -214,15 +220,27 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\Barber.png" />
+    <Content Include="Content\Images\load.gif" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-theme.min.css.map" />
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -281,15 +299,38 @@
     <Content Include="Views\Basket\BasketSummary.cshtml" />
     <Content Include="Views\Basket\Checkout.cshtml" />
     <Content Include="Views\Basket\Thankyou.cshtml" />
+    <Content Include="Views\ProductManager\Details.cshtml" />
+    <Content Include="Views\ShopManager\Create.cshtml" />
+    <Content Include="Views\ShopManager\Delete.cshtml" />
+    <Content Include="Views\ShopManager\Details.cshtml" />
+    <Content Include="Views\ShopManager\Edit.cshtml" />
+    <Content Include="Views\ShopManager\Index.cshtml" />
+    <Content Include="Views\ServiceManager\Create.cshtml" />
+    <Content Include="Views\ServiceManager\Delete.cshtml" />
+    <Content Include="Views\ServiceManager\Details.cshtml" />
+    <Content Include="Views\ServiceManager\Edit.cshtml" />
+    <Content Include="Views\ServiceManager\Index.cshtml" />
+    <Content Include="Views\ServiceBooking\BookNow.cshtml" />
+    <Content Include="Views\ServiceBooking\ViewBooking.cshtml" />
+    <Content Include="Views\ServiceBooking\Booking.cshtml" />
+    <Content Include="Views\ServiceBooking\RescheduleBooking.cshtml" />
+    <Content Include="Views\Role\Create.cshtml" />
+    <Content Include="Views\Role\Index.cshtml" />
+    <Content Include="Views\Role\RoleAssignment.cshtml" />
+    <Content Include="Views\Role\UserRoles.cshtml" />
+    <Content Include="Views\Account\SentMail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\ProductImages\" />
+    <Folder Include="Content\ServiceImages\" />
+    <Folder Include="Content\ShopImages\" />
+    <Folder Include="Views\ServiceBasket\" />
+    <Folder Include="Views\Shop\" />
+    <Folder Include="Views\Waiting2\" />
+    <Folder Include="Views\Waiting3\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />

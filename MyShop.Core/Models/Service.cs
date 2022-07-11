@@ -18,17 +18,21 @@ namespace MyShop.Core.Models
         public string Name { get; set; }
 
         [ForeignKey("Shop")]
+        [Display(Name = "Shop")]
         public string ShopID { get; set; }
 
         [Required]
         [DataType(DataType.Currency)]
         public decimal Price { get; set; }
 
-        [Required]
+       
         public string Image1 { get; set; }
 
         public string Image2 { get; set; }
-
+        [NotMapped]
+        public string _Image1 { get; set; }
+        [NotMapped]
+        public string _Image2 { get; set; } 
 
 
 

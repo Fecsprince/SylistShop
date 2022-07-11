@@ -35,28 +35,38 @@ namespace MyShop.DataAccess.SQL
         public void Delete(string Id)
         {
             var t = Find(Id);
-            if (context.Entry(t).State == EntityState.Detached)
+            if (t != null)
             {
-                Dbset.Attach(t);
-
                 Dbset.Remove(t);
+                Commit();
             }
+
+            //if (context.Entry(t).State == EntityState.Detached)
+            //{
+            //    Dbset.Attach(t);
+
+            //    Dbset.Remove(t);
+            //}
         }
 
         public T Find(string Id)
         {
-          return  Dbset.Find(Id);
+            return Dbset.Find(Id);
         }
 
-        public void Insert(T t)
+        public T Insert(T t)
         {
             Dbset.Add(t);
+            Commit();
+            return t;
         }
 
-        public void Update(T t)
+        public T Update(T t)
         {
             Dbset.Attach(t);
             context.Entry(t).State = EntityState.Modified;
+            Commit();
+            return t;
         }
     }
 }
