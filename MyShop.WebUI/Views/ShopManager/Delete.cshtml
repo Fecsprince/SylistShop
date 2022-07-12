@@ -1,14 +1,15 @@
-﻿@model MyShop.Core.Models.Product
+﻿@model MyShop.Core.Models.Shop
 
 @{
     ViewBag.Title = "Delete";
 }
 
-<h2>Delete</h2>
+<div id="bucket">
+    <h2 id="guideBucket">Delete</h2>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Product</h4>
+    <h3>Are you sure you want to delete this?</h3>
+
+    <h4>Shop</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -19,20 +20,13 @@
             @Html.DisplayFor(model => model.Name)
         </dd>
 
+
         <dt>
-            @Html.DisplayNameFor(model => model.Description)
+            @Html.DisplayNameFor(model => model.StoreTypeId)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Category.Name)
+            @Html.DisplayFor(model => model.StoreType.Name)
         </dd>
 
         <dt>
@@ -40,17 +34,11 @@
         </dt>
 
         <dd>
-            <img class="img-thumbnail" style="width:50px; height:50px" src="~/Content/ProductImages/@Model.Image1" />
+            <img class="img-thumbnail" style="width:50px; height:50px" src="~/Content/ShopImages/@Model.Image1" />
             <br />
             <br />
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Price)
-        </dd>
 
     </dl>
 

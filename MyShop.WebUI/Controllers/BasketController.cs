@@ -49,7 +49,7 @@ namespace MyShop.WebUI.Controllers
             return PartialView(basketsum);
         }
 
-        [Authorize]
+        [Authorize(Roles = "Customer")]
         public ActionResult Checkout()
         {
             Customer customer = customers.Collection().FirstOrDefault(i => i.Email == User.Identity.Name);
@@ -78,7 +78,7 @@ namespace MyShop.WebUI.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Customer")]
         public ActionResult Checkout(Order order)
         {
             var basketItem = basketService.GetBasketItem(this.HttpContext);

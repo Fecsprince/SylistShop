@@ -12,7 +12,7 @@ using System.Web.Mvc;
 
 namespace MyShop.WebUI.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Customer, SuperAdmin, StoreManager, ShopManager")]
     public class ServiceBookingController : Controller
     {
         IRepository<Service> serviceContext;
@@ -28,8 +28,6 @@ namespace MyShop.WebUI.Controllers
             this.shopcontext = Shopcontext;
             this.bookingContext = Bookingcontext;
         }
-
-
 
 
         [HttpGet]
@@ -320,11 +318,11 @@ namespace MyShop.WebUI.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [HttpGet]
-        public ActionResult ViewBooking()
-        {
-            return View();
-        }
+        //[HttpGet]
+        //public ActionResult ViewBooking()
+        //{
+        //    return View();
+        //}
 
         [HttpGet]
         public ActionResult RescheduleBooking(string bookingId)

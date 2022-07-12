@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using MyShop.Core.Models;
+using MyShop.Core.Supports;
 
 namespace MyShop.WebUI.Controllers
 {
@@ -91,11 +92,11 @@ namespace MyShop.WebUI.Controllers
 
 
             if (User.Identity.IsAuthenticated)
-            {   
+            {
 
                 var userRolesModel = new List<UserRoleModel>();
 
-                var lstUsers = context.Users.Where(x =>x.EmailConfirmed == true).ToList();
+                var lstUsers = context.Users.Where(x => x.EmailConfirmed == true).ToList();
 
                 foreach (var user in lstUsers)
                 {
@@ -186,45 +187,79 @@ namespace MyShop.WebUI.Controllers
             return null;
         }
 
+        [AllowAnonymous]
+        [HttpGet]
+        public ActionResult RoleRequest()
+        {
+            var rol = context.Roles.ToList();
+            if (rol != null)
+            {
+                ViewBag.Email = User.Identity.Name;
+                ViewBag.Roles = rol;
+                return View();
+            }
+            TempData["Msg"] = "EMPTY ROLES";
+            return RedirectToAction("Index", "Home");
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public ActionResult RoleRequest(string Email, string Name)
+        {
+            var _user = context.Users.Where(x => x.Email == Email).FirstOrDefault();
+
+            //GET SUPERADMIN EMAIL
+            var role = context.Roles.Where(x => x.Name == "SuperAdmin").FirstOrDefault();
+            if (role != null)
+            {
+                string superAdminEmailAddress = "";
+                var users = context.Users.ToList();
+                foreach (var user in users)
+                {
+                    foreach (var rol in user.Roles)
+                    {
+                        if (rol.RoleId == role.Id)
+                        {
+                            superAdminEmailAddress = user.Email;
+                        }
+                    }
+                }
+
+                if (superAdminEmailAddress != null && superAdminEmailAddress != "")
+                {
+                    //PROCESS EMAIL
+                    //SEND EMAIL TO CUSTOMER
+
+                    IdentityMessage custidentyMessage = new IdentityMessage()
+                    {
+                        Destination = superAdminEmailAddress,
+                        Subject = "Role Request"
+                    };
+
+                    string html = "Please Admin, I am requesting to be added to " + Name + " role\b, Email: " + Email +
+                        " with \bUserID: " + _user.Id + ".";
+
+                    MailHelper sendMail = new MailHelper();
+                    ConfirmEmailSend sendMsg = sendMail.SendMail(custidentyMessage, html);
+                    TempData["Msg"] = "Your request was successful!";
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    TempData["Msg"] = "NO SUPER ADMIN ACCOUNT AVAILABLE!";
+                    return RedirectToAction("Index", "Home");
+                }
+
+            }
+            else
+            {
+                TempData["Msg"] = "NO SUPER ADMIN ROLE!";
+                return RedirectToAction("Index", "Home");
+            }
+        }
 
 
 
-
-        //public bool isAdminUser2()
-        //{
-        //    if (User.Identity.IsAuthenticated)
-        //    {
-        //        var user = User.Identity;
-        //        ApplicationDbContext context = new ApplicationDbContext();
-        //        var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
-
-        //        var s = UserManager.GetRoles(user.GetUserId());
-
-        //        foreach (var item in s)
-        //        {
-
-        //            if (item == null)
-        //            {
-        //                if (s[0].ToString() == "Admin")
-        //                {
-        //                    return true;
-        //                }
-        //                else
-        //                {
-        //                    return false;
-        //                }
-
-        //            }
-        //            else
-        //            {
-        //                return false;
-        //            }
-        //        }
-
-
-        //    }
-        //    return false;
-        //}
 
         public bool isAdminUser()
         {
@@ -234,15 +269,15 @@ namespace MyShop.WebUI.Controllers
                 // ApplicationDbContext context = new ApplicationDbContext();
                 var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
 
-                var s = UserManager.GetRoles(user.GetUserId());
-                if (s[0].ToString() == "SuperAdmin")
+                var roles = UserManager.GetRoles(user.GetUserId());
+                foreach (var role in roles)
                 {
-                    return true;
+                    if (role.ToString() == "SuperAdmin")
+                    {
+                        return true;
+                    }
                 }
-                else
-                {
-                    return false;
-                }
+
             }
             return false;
         }

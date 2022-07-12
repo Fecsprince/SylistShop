@@ -11,13 +11,18 @@ using System.Web.Mvc;
 
 namespace MyShop.WebUI.Controllers
 {
+    [Authorize(Roles = "Customer,ShopManager,SuperAdmin")]
     public class ShopManagerController : Controller
     {
         IRepository<Shop> repository;
+        readonly IRepository<StoreType> repositoryStoreType;
         private ApplicationDbContext userContext;
-        public ShopManagerController(IRepository<Shop> Repos)
+
+
+        public ShopManagerController(IRepository<Shop> Repos, IRepository<StoreType> StoresRepo)
         {
             repository = Repos;
+            repositoryStoreType = StoresRepo;
             userContext = new ApplicationDbContext();
         }
 
@@ -26,23 +31,36 @@ namespace MyShop.WebUI.Controllers
         // GET: ProductManager
         public ActionResult Index()
         {
+            IEnumerable<Shop> shops;
+            ApplicationUser user = new ApplicationUser();
+
+
             if (TempData["Msg"] != null)
             {
                 ViewBag.Msg = TempData["Msg"].ToString();
             }
-            var user = userContext.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault();
-
-            List<Shop> shops = repository.Collection().ToList();
-            foreach (var shop in shops)
+            if (User.IsInRole("SuperAdmin"))
             {
-                shop.UserID = user.Email;
+                shops = repository.Collection();
+
             }
+            else
+            {
+                user = userContext.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault();
+
+                shops = repository.Collection().Where(x => x.UserID == user.Id).ToList();
+                
+                foreach (var shop in shops)
+                {
+                    shop.UserID = user.Email;
+                }
+            }
+
             return View(shops);
         }
 
 
         [HttpGet]
-        [Authorize]
         public ActionResult Create()
         {
             //GET USER
@@ -53,13 +71,13 @@ namespace MyShop.WebUI.Controllers
                 Image1 = "dd"
             };
 
+            ViewBag.StoreType = repositoryStoreType.Collection();
             ViewBag.WorkingDays = xy.GetWorkingDays();
             return View(shop);
         }
 
 
         [HttpPost]
-        [Authorize]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Shop shop, HttpPostedFileBase file1, HttpPostedFileBase file2)
         {
@@ -80,6 +98,7 @@ namespace MyShop.WebUI.Controllers
                     msg = "Please select a file, Try again!";
                     ViewBag.Msg = msg;
                     ViewBag.WorkingDays = xy.GetWorkingDays();
+                    ViewBag.StoreType = repositoryStoreType.Collection();
 
                     return View(shop);
                 }
@@ -114,7 +133,7 @@ namespace MyShop.WebUI.Controllers
                         pathy = Server.MapPath("~/Content/ShopImages/" + shop.Image2);
                         if (System.IO.File.Exists(pathy))
                             System.IO.File.Delete(pathy);
-                    
+
 
                     }
 
@@ -154,6 +173,7 @@ namespace MyShop.WebUI.Controllers
                                             ex.InnerException.Message.ToString();
                     ViewBag.Msg = TempData["Msg"].ToString();
                     ViewBag.WorkingDays = xy.GetWorkingDays();
+                    ViewBag.StoreType = repositoryStoreType.Collection();
 
                     return View();
                 }
@@ -162,6 +182,7 @@ namespace MyShop.WebUI.Controllers
                     TempData["Msg"] = "Please copy response and send to admin: \n" + ex.Message.ToString();
                     ViewBag.Msg = TempData["Msg"].ToString();
                     ViewBag.WorkingDays = xy.GetWorkingDays();
+                    ViewBag.StoreType = repositoryStoreType.Collection();
 
                     return View();
                 }
@@ -169,6 +190,7 @@ namespace MyShop.WebUI.Controllers
 
             ViewBag.Msg = TempData["Msg"].ToString();
             ViewBag.WorkingDays = xy.GetWorkingDays();
+            ViewBag.StoreType = repositoryStoreType.Collection();
 
             return View();
         }
@@ -196,8 +218,11 @@ namespace MyShop.WebUI.Controllers
                     LGA = model.LGA,
                     _Image1 = model.Image1,
                     _Image2 = model.Image2,
-                    UserID = model.UserID
+                    UserID = model.UserID,
+                    StoreTypeId = model.StoreTypeId
                 };
+
+                ViewBag.StoreType = repositoryStoreType.Collection();
                 ViewBag.WorkingDays = xy.GetWorkingDays();
 
                 return View(shop);
@@ -222,6 +247,7 @@ namespace MyShop.WebUI.Controllers
                 msg = "Please select a file, Try again!";
                 ViewBag.Msg = msg;
                 ViewBag.WorkingDays = xy.GetWorkingDays();
+                ViewBag.StoreType = repositoryStoreType.Collection();
 
                 return View(model);
             }
@@ -279,6 +305,7 @@ namespace MyShop.WebUI.Controllers
                     objShop.Image1 = model.Image1;
                     objShop.Image2 = model.Image2;
                     objShop.UserID = model.UserID;
+                    objShop.StoreTypeId = model.StoreTypeId;
 
 
 
@@ -320,11 +347,13 @@ namespace MyShop.WebUI.Controllers
 
             ViewBag.Msg = TempData["Msg"].ToString();
             ViewBag.WorkingDays = xy.GetWorkingDays();
+            ViewBag.StoreType = repositoryStoreType.Collection();
 
             return View(model);
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult Details(string id)
         {
             if (id != null)
@@ -358,7 +387,8 @@ namespace MyShop.WebUI.Controllers
                             LGA = shop.LGA,
                             _Image1 = shop.Image1,
                             _Image2 = shop.Image2,
-                            UserID = userName
+                            UserID = userName,
+                            StoreTypeId = shop.StoreType.Name
                         };
 
 

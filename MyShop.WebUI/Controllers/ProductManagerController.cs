@@ -13,16 +13,19 @@ using MyShop.WebUI.Models;
 
 namespace MyShop.WebUI.Controllers
 {
+    [Authorize(Roles = "SuperAdmin,StoreManager")]
     public class ProductManagerController : Controller
     {
 
         IRepository<Product> context;
         IRepository<ProductCategory> Catecontext;
+        IRepository<Shop> shopcontext;
         private ApplicationDbContext userContext;
 
-        public ProductManagerController(IRepository<Product> Prodcontext, IRepository<ProductCategory> ProdCatecontext)
+        public ProductManagerController(IRepository<Product> Prodcontext, IRepository<Shop> Shopcontext, IRepository<ProductCategory> ProdCatecontext)
         {
             context = Prodcontext;
+            shopcontext = Shopcontext;
             Catecontext = ProdCatecontext;
             userContext = new ApplicationDbContext();
         }
@@ -36,13 +39,48 @@ namespace MyShop.WebUI.Controllers
                 ViewBag.Msg = TempData["Msg"].ToString();
             }
 
-            List<Product> products = context.Collection().ToList();
-            return View(products);
+
+            IEnumerable<Product> prods = null;
+            ApplicationUser user = new ApplicationUser();
+
+
+            if (TempData["Msg"] != null)
+            {
+                ViewBag.Msg = TempData["Msg"].ToString();
+            }
+            if (User.IsInRole("SuperAdmin"))
+            {
+                prods = context.Collection();
+
+            }
+            else
+            {
+                user = userContext.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault();
+                var shopOwner = shopcontext.Collection().Where(x => x.UserID == user.Id).FirstOrDefault();
+                if (shopOwner != null)
+                {
+                    if (shopOwner.StoreType.Name.Contains("Store"))
+                    {
+                        prods = context.Collection().Where(x => x.ShopID == shopOwner.Id).ToList();
+
+                        foreach (var prod in prods)
+                        {
+                            prod.UserID = user.Email;
+                        }
+                    }
+                    else
+                    {
+                        ViewBag.Msg = "Access Denied, Only Store Manager can access!";
+                    }
+                }
+
+            }
+            return View(prods);
+
         }
 
-     
+
         [HttpGet]
-        [Authorize]
         public ActionResult Create()
         {
             //LOAD ALL CATEGORIES
@@ -62,7 +100,6 @@ namespace MyShop.WebUI.Controllers
 
 
         [HttpPost]
-        [Authorize]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Product prod, HttpPostedFileBase file1, HttpPostedFileBase file2)
         {
@@ -73,59 +110,66 @@ namespace MyShop.WebUI.Controllers
             prod.Image1 = "";
             prod.Image2 = "";
 
-            try
+            //GET SHOPOWNER_USER
+            var user = userContext.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault();
+
+            //GET SHOP
+            var shopx = shopcontext.Collection().Where(x => x.UserID == user.Id).FirstOrDefault();
+            if (shopx != null)
             {
-
-                // CHECK IF IMAGE1 UPLOAD FILE IS EMPTY
-                if (file1 == null || file1.ContentLength < 0 ||
-                    file2 == null || file2.ContentLength < 0)
-                {
-                    msg = "Please select a file, Try again!";
-                    ViewBag.Msg = msg;
-                    ViewBag.Category = categories;
-
-                    return View(prod);
-                }
-                else if (file1 != null && file1.ContentLength > 0 &&
-                    file1.FileName.ToLower().EndsWith("jpg") ||
-                    file1.FileName.ToLower().EndsWith("png") ||
-                    file2.ContentLength > 0 &&
-                    file2.FileName.ToLower().EndsWith("jpg") ||
-                    file2.FileName.ToLower().EndsWith("png"))
+                try
                 {
 
-                    //UPLOAD NOT EMPTY
+                    // CHECK IF IMAGE1 UPLOAD FILE IS EMPTY
+                    if (file1 == null || file1.ContentLength < 0 ||
+                        file2 == null || file2.ContentLength < 0)
+                    {
+                        msg = "Please select a file, Try again!";
+                        ViewBag.Msg = msg;
+                        ViewBag.Category = categories;
 
-
-                    int postFix = 1;
-
-                    prod.Image1 = prod.Id + postFix.ToString() + Path.GetExtension(file1.FileName);
-
-
-                    string pathx = Server.MapPath("~/Content/ProductImages/" + prod.Image1);
-                    if (System.IO.File.Exists(pathx))
-                        System.IO.File.Delete(pathx);
-                    file1.SaveAs(pathx);
-
-                    //CHANGE IMAGE 2 FILE NAME
-                    if (file2 != null)
+                        return View(prod);
+                    }
+                    else if (file1 != null && file1.ContentLength > 0 &&
+                        file1.FileName.ToLower().EndsWith("jpg") ||
+                        file1.FileName.ToLower().EndsWith("png") ||
+                        file2.ContentLength > 0 &&
+                        file2.FileName.ToLower().EndsWith("jpg") ||
+                        file2.FileName.ToLower().EndsWith("png"))
                     {
 
-                        postFix++;
+                        //UPLOAD NOT EMPTY
 
-                        prod.Image2 = prod.Id + postFix.ToString() + Path.GetExtension(file2.FileName);
 
-                        string pathy = Server.MapPath("~/Content/ProductImages/" + prod.Image2);
-                        if (System.IO.File.Exists(pathy))
-                            System.IO.File.Delete(pathy);
-                        file2.SaveAs(pathy);
+                        int postFix = 1;
 
-                    }
+                        prod.Image1 = prod.Id + postFix.ToString() + Path.GetExtension(file1.FileName);
+                        prod.ShopID = shopx.Id;
 
-                    //GET USER
-                    //var user = userContext.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault();
-                    //if (user != null)
-                    //{
+                        string pathx = Server.MapPath("~/Content/ProductImages/" + prod.Image1);
+                        if (System.IO.File.Exists(pathx))
+                            System.IO.File.Delete(pathx);
+                        file1.SaveAs(pathx);
+
+                        //CHANGE IMAGE 2 FILE NAME
+                        if (file2 != null)
+                        {
+
+                            postFix++;
+
+                            prod.Image2 = prod.Id + postFix.ToString() + Path.GetExtension(file2.FileName);
+
+                            string pathy = Server.MapPath("~/Content/ProductImages/" + prod.Image2);
+                            if (System.IO.File.Exists(pathy))
+                                System.IO.File.Delete(pathy);
+                            file2.SaveAs(pathy);
+
+                        }
+
+                        //GET USER
+                        //var user = userContext.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault();
+                        //if (user != null)
+                        //{
 
                         //prod.UserID = user.Id;
 
@@ -147,32 +191,38 @@ namespace MyShop.WebUI.Controllers
                         {
                             TempData["Msg"] = "Update failed: Error 100 --> Invalid entry!";
                         }
-                                 }
-                else
-                {
-                    TempData["Msg"] = "Image 1 was not valid!";
+                    }
+                    else
+                    {
+                        TempData["Msg"] = "Image 1 was not valid!";
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
+                catch (Exception ex)
+                {
 
-                if (ex.InnerException.Message != null)
-                {
-                    TempData["Msg"] = "Please copy response and send to admin: \n" +
-                                            ex.Message.ToString() + "\n" +
-                                            ex.InnerException.Message.ToString();
-                    ViewBag.Msg = TempData["Msg"].ToString();
-                    ViewBag.Categories = categories;
-                    return View();
-                }
-                else
-                {
-                    TempData["Msg"] = "Please copy response and send to admin: \n" + ex.Message.ToString();
-                    ViewBag.Msg = TempData["Msg"].ToString();
-                    ViewBag.Categories = categories;
-                    return View();
+                    if (ex.InnerException.Message != null)
+                    {
+                        TempData["Msg"] = "Please copy response and send to admin: \n" +
+                                                ex.Message.ToString() + "\n" +
+                                                ex.InnerException.Message.ToString();
+                        ViewBag.Msg = TempData["Msg"].ToString();
+                        ViewBag.Categories = categories;
+                        return View();
+                    }
+                    else
+                    {
+                        TempData["Msg"] = "Please copy response and send to admin: \n" + ex.Message.ToString();
+                        ViewBag.Msg = TempData["Msg"].ToString();
+                        ViewBag.Categories = categories;
+                        return View();
+                    }
                 }
             }
+            else
+            {
+                TempData["Msg"] = "YOU MUST BE A STORE OWNER BEFORE YOU ADD NEW PRODUCT ON SYLIST";
+            }
+
 
 
             ViewBag.Categories = categories;
@@ -203,7 +253,7 @@ namespace MyShop.WebUI.Controllers
 
                 //LOAD ALL CATEGORIES
                 var categories = Catecontext.Collection();
-                
+
                 ViewBag.Categories = categories;
 
                 return View(product);
@@ -224,7 +274,7 @@ namespace MyShop.WebUI.Controllers
 
             //LOAD ALL CATEGORIES
             var categories = Catecontext.Collection();
-            
+
             // CHECK IF IMAGE1 UPLOAD FILE IS EMPTY
             if (file1 == null || file1.ContentLength < 0)
             {

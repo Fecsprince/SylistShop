@@ -6,6 +6,7 @@
     <title>@ViewBag.Title - Sylist</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <link rel="icon" href="~/Content/Images/SoftKonnectLogo Transparent.png" type="image/gif" />
 
     <style type="text/css">
         body {
@@ -87,64 +88,87 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Role Request", "RoleRequest", "Role")</li>
 
-                    @* @if (User.IsInRole("StoreManager, SuperAdmin"))*@
-                    @* {*@
+                    @if (User.IsInRole("StoreManager"))
+                    {
 
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Store Manager<b class="caret"></b></a>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Store Manager<b class="caret"></b></a>
 
 
-                        <ul class="dropdown-menu">
-                            <li class="divider"></li>
-                            <li>@Html.ActionLink("Product", "Index", "ProductManager")</li>
-                            <li>@Html.ActionLink("Category", "Index", "ProductCategoryManager")</li>
+                            <ul class="dropdown-menu">
+                                <li class="divider"></li>
+                                <li>@Html.ActionLink("Product", "Index", "ProductManager")</li>
 
-                        </ul>
-                    </li>
+                            </ul>
+                        </li>
+                    }
 
-                    
-                    @*  *@}
 
+                    @if (User.IsInRole("ShopManager"))
+                    {
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Shop Manager<b class="caret"></b></a>
+
+
+                            <ul class="dropdown-menu">
+                                <li class="divider"></li>
+                                <li> <a href="@Url.Action("Index","ShopManager")">Shop Manager</a></li>
+                                <li> <a href="@Url.Action("Index","ServiceManager")">Service</a></li>
+
+                            </ul>
+                        </li>
+                    }
+                    else
+                    {
+                        <li> <a href="@Url.Action("Index","ShopManager")">Shop Manager</a></li>
+
+                    }
+
+
+                    @if (User.IsInRole("SuperAdmin"))
+                    {
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin<b class="caret"></b></a>
+
+
+                            <ul class="dropdown-menu">
+                                @*<li class="divider"></li>
+                    <li class="dropdown-header">Store Manager</li>
+                    <li>@Html.ActionLink("Product", "Index", "ProductManager")</li>
+                    <li>@Html.ActionLink("Category", "Index", "ProductCategoryManager")</li>
+
+                    <li class="divider"></li>
+                    <li class="dropdown-header">Shop Manager</li>
+                    <li> <a href="@Url.Action("Index", "ShopManager")">Shop Manager</a></li>
+                    <li> <a href="@Url.Action("Index", "ServiceManager")">Service</a></li>*@
+
+                                <li class="divider"></li>
+                                <li class="dropdown-header">Role Manager</li>
+                                <li><a href="@Url.Action("Index", "Role")">Roles</a></li>
+                                <li><a href="@Url.Action("Create", "Role")">New Role</a></li>
+                                <li><a href="@Url.Action("UserRoles", "Role")">Users in Role</a></li>
+                                <li><a href="@Url.Action("RoleAssignment", "Role")">Assignment</a></li>
+
+
+                                <li class="divider"></li>
+                                <li class="dropdown-header">Utility</li>
+                                <li>@Html.ActionLink("Product Category", "Index", "ProductCategoryManager")</li>
+                                <li>@Html.ActionLink("Store Type", "Index", "StoreType")</li>
+
+                            </ul>
+                        </li>
+
+                    }
                     @* @if (User.IsInRole("SuperAdmin"))*@
                     @* {*@
 
-                    @*  *@}
-
-                    @* @if (User.IsInRole("ShopManager, SuperAdmin"))*@
-                    @* {*@
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Shop Manager<b class="caret"></b></a>
-
-
-                        <ul class="dropdown-menu">
-                            <li class="divider"></li>
-                            <li> <a href="@Url.Action("Index","ShopManager")">Shop Manager</a></li>
-                            <li> <a href="@Url.Action("Index","ServiceManager")">Service</a></li>
-
-                        </ul>
-                    </li>
-                    @*  *@}
-
-                    @* @if (User.IsInRole("SuperAdmin"))*@
-                    @* {*@
-
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Role Management<b class="caret"></b></a>
-
-                        <ul class="dropdown-menu">
-                            <li class="divider"></li>
-                            <li><a href="@Url.Action("Index","Role")">Roles</a></li>
-                            <li><a href="@Url.Action("Create","Role")">New Role</a></li>
-                            <li><a href="@Url.Action("UserRoles","Role")">Users in Role</a></li>
-                            <li><a href="@Url.Action("RoleAssignment","Role")">Assignment</a></li>
+                    @* } *@
 
 
 
-                        </ul>
-                    </li>
-                    @*  *@}
+
 
 
 

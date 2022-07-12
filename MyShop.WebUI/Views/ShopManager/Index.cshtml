@@ -57,8 +57,20 @@
                         @Html.DisplayFor(modelItem => item.UserID)
                     </td>
                     <td>
-                        <a href="@Url.Action("Details","ShopManager", new {@id = item.Id })" class="btn btn-success"><span class="glyphicon glyphicon-folder-open"></span> </a>
-                        <a href="@Url.Action("Edit","ShopManager", new {@id = item.Id })" class="btn btn-success"><span class="glyphicon glyphicon-pencil"></span> </a>
+                        @if (User.IsInRole("ShopManager") || User.IsInRole("StoreManager"))
+                        {
+                            <a href="@Url.Action("Details","ShopManager", new {@id = item.Id })" class="btn btn-success"><span class="glyphicon glyphicon-folder-open"></span> </a>
+                            <a href="@Url.Action("Edit","ShopManager", new {@id = item.Id })" class="btn btn-success"><span class="glyphicon glyphicon-pencil"></span> </a>
+                            <a href="@Url.Action("Delete","ShopManager", new {@Id = item.Id })" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> </a>
+
+                        }
+                        else if (User.IsInRole("SuperAdmin"))
+                        {
+                            <a href="@Url.Action("Details","ShopManager", new {@id = item.Id })" class="btn btn-success"><span class="glyphicon glyphicon-folder-open"></span> </a>
+                            <a href="@Url.Action("Edit","ShopManager", new {@id = item.Id })" class="btn btn-success"><span class="glyphicon glyphicon-pencil"></span> </a>
+                            <a href="@Url.Action("Delete","ShopManager", new {@Id = item.Id })" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> </a>
+
+                        }
 
 
                     </td>

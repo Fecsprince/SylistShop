@@ -11,6 +11,9 @@ namespace MyShop.Core.Models
 {
     public class Shop : BaseEntity
     {
+        [Required]
+        [ForeignKey("StoreType")]
+        public string StoreTypeId { get; set; } 
 
         [Required]
         [StringLength(50, ErrorMessage = "Name character maximum length is 50!")]
@@ -68,7 +71,9 @@ namespace MyShop.Core.Models
 
 
         //REFERENCES
+        public virtual StoreType StoreType { get; set; }
         public virtual ICollection<Service> Services { get; set; }
+        public virtual ICollection<Product> Products { get; set; } 
 
     }
 }

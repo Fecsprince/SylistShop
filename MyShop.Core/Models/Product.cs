@@ -20,6 +20,10 @@ namespace MyShop.Core.Models
         [Display(Name = "Category")]
         public string CategoryID { get; set; }
 
+        [ForeignKey("Shop")]
+        [Display(Name = "Shop")]
+        public string ShopID { get; set; } 
+
         [Required]
         [DataType(DataType.Currency)]
         public decimal Price { get; set; }
@@ -45,6 +49,7 @@ namespace MyShop.Core.Models
 
         //REFERENCES 
         public virtual ProductCategory Category { get; set; }
+        public virtual Shop Shop { get; set; } 
         public virtual ICollection<Order> Orders { get; set; }
 
     }

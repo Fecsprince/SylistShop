@@ -79,6 +79,10 @@ namespace MyShop.WebUI.Controllers
             return View(model);
         }
 
+
+
+
+
         public ActionResult Details(string id)
         {
             Product prod = context.Find(id);

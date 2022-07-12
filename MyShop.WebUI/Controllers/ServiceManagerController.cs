@@ -10,6 +10,7 @@ using System.Web.Mvc;
 
 namespace MyShop.WebUI.Controllers
 {
+    [Authorize(Roles = "SuperAdmin,ShopManager")]
     public class ServiceManagerController : Controller
     {
         IRepository<Service> context;
@@ -32,20 +33,30 @@ namespace MyShop.WebUI.Controllers
                 ViewBag.Msg = TempData["Msg"].ToString();
             }
             List<Service> services = null;
-            if (shopId != null)
-            {
-                services = context.Collection().Where(x => x.ShopID == shopId).ToList();
-            }
-            else
+
+            if (User.IsInRole("SuperAdmin"))
             {
                 services = context.Collection().ToList();
             }
+            else
+            {
+                var user = userContext.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault();
+                var shop = shopContext.Collection().Where(x => x.UserID == user.Id).FirstOrDefault();
+                if (shop != null)
+                {
+                    services = context.Collection().Where(x => x.ShopID == shop.Id).ToList();
+                }
+                else
+                {
+                    ViewBag.Msg = "ACCESS DENIED, NOT AUTHORIZED!";
+                }
+            }
+            
             return View(services);
         }
 
 
         [HttpGet]
-        [Authorize]
         public ActionResult Create()
         {
 
@@ -71,7 +82,6 @@ namespace MyShop.WebUI.Controllers
 
 
         [HttpPost]
-        [Authorize]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Service service, HttpPostedFileBase file1, HttpPostedFileBase file2)
         {

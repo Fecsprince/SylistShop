@@ -8,15 +8,12 @@ using MyShop.Core.Contracts;
 
 namespace MyShop.WebUI.Controllers
 {
+    [Authorize(Roles = "SuperAdmin")]
     public class ProductCategoryManagerController : Controller
     {
         IRepository<ProductCategory> context;
 
-        //public ProductCategoryManagerController()
-        //{
-        //    context = new InMemoryRepository<ProductCategory>();
-        //}
-
+       
         public ProductCategoryManagerController(IRepository<ProductCategory> context)
         {
             this.context = context;

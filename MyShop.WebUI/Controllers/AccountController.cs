@@ -12,6 +12,7 @@ using MyShop.WebUI.Models;
 using MyShop.Core.Models;
 using MyShop.Core.Contracts;
 using MyShop.Core.Supports;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace MyShop.WebUI.Controllers
 {
@@ -22,7 +23,7 @@ namespace MyShop.WebUI.Controllers
         private ApplicationUserManager _userManager;
         private IRepository<Customer> customerRepo;
 
-
+        private ApplicationDbContext con = new ApplicationDbContext();
 
         public AccountController(IRepository<Customer> customerRepository)
         {
@@ -172,12 +173,12 @@ namespace MyShop.WebUI.Controllers
 
                     customerRepo.Insert(customer);
                     customerRepo.Commit();
-                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    //await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code}, protocol: Request.Url.Scheme);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
 
 
                     //IF IT GETS HERE, CREATE ACCOUNT FOR INSTITUTION SUPERVISOR
@@ -217,6 +218,8 @@ namespace MyShop.WebUI.Controllers
 
         }
 
+        
+
 
         //
         // GET: /Account/ConfirmEmail
@@ -227,8 +230,64 @@ namespace MyShop.WebUI.Controllers
             {
                 return View("Error");
             }
-            var result = await UserManager.ConfirmEmailAsync(userId, code);
-            return View(result.Succeeded ? "ConfirmEmail" : "Error");
+
+            IdentityResult resultx = null;
+            IdentityResult result = null;
+
+
+            var role = con.Roles.Where(x => x.Name == "Customer").FirstOrDefault();
+            if (role != null)
+            {
+                //ROLE EXIST
+
+
+                if (userId == null || role == null)
+                {
+                    ViewBag.RoleError = "Invalid role assignment!";
+                    return View();
+                }
+                else
+                {
+                    var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(con));
+
+                    //NOW ADD NEW REGISTERED USER AND CONFIRM EMAIL 
+
+                    resultx = UserManager.AddToRole(userId, role.Name);
+                }
+            }
+            else
+            {
+                //ROLE DOES NOT EXIST
+                //NOW CREATE ROLE
+                IdentityRole Role = new IdentityRole
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Name = "Customer"
+                };
+
+                con.Roles.Add(Role);
+                con.SaveChanges();
+                //AND ADD NEW REGISTERED USER
+
+                if (userId == null || Role.Name == null)
+                {
+                    ViewBag.RoleError = "Invalid role assignment!";
+                    return View();
+                }
+                else
+                {
+                    var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(con));
+
+                    //NOW ADD NEW REGISTERED USER AND CONFIRM EMAIL
+
+                    resultx = UserManager.AddToRole(userId, Role.Name);
+                }
+
+            }
+
+            result = await UserManager.ConfirmEmailAsync(userId, code);
+
+            return View(result.Succeeded && resultx.Succeeded ? "ConfirmEmail" : "Error");
         }
 
         //
@@ -248,6 +307,8 @@ namespace MyShop.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
+                string msg;
+
                 var user = await UserManager.FindByNameAsync(model.Email);
                 if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
                 {
@@ -257,10 +318,30 @@ namespace MyShop.WebUI.Controllers
 
                 // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                 // Send an email with this link
-                // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                // return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                //await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+
+                //SEND EMAIL
+
+                IdentityMessage idMes = new IdentityMessage()
+                {
+                    Destination = model.Email,
+                    Subject = "Password Reset"
+                };
+
+                string html = "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>";
+
+                MailHelper sendMail = new MailHelper();
+                ConfirmEmailSend sendMsg = sendMail.SendMail(idMes, html);
+
+                msg = "Please if you requested for password reset proceed to your " +
+                    "email else proceed to our site to reset your password. " +
+                    "Please check your email for verification.\n" + sendMsg.Message;
+                //return RedirectToAction("SentMail", new { @msg = msg });
+
+                return RedirectToAction("ForgotPasswordConfirmation", "Account", new {@msg = msg });
             }
 
             // If we got this far, something failed, redisplay form
@@ -270,8 +351,12 @@ namespace MyShop.WebUI.Controllers
         //
         // GET: /Account/ForgotPasswordConfirmation
         [AllowAnonymous]
-        public ActionResult ForgotPasswordConfirmation()
+        public ActionResult ForgotPasswordConfirmation(string msg)
         {
+            if (msg != null && msg != "")
+            {
+                ViewBag.Msg = msg;
+            }
             return View();
         }
 

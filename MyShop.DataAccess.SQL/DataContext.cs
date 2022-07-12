@@ -28,6 +28,7 @@ namespace MyShop.DataAccess.SQL
         public DbSet<Service> Services { get; set; }
         public DbSet<Shop> Shops { get; set; }
         public DbSet<Booking> Bookings { get; set; }
+        public DbSet<StoreType> StoreTypes { get; set; } 
 
 
     }

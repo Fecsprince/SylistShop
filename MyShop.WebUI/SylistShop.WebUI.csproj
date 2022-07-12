@@ -208,7 +208,7 @@
     <Compile Include="Controllers\ServiceManagerController.cs" />
     <Compile Include="Controllers\ShopManagerController.cs" />
     <Compile Include="Controllers\ServiceBookingController.cs" />
-    <Compile Include="Controllers\Waiting2Controller.cs" />
+    <Compile Include="Controllers\StoreTypeController.cs" />
     <Compile Include="Controllers\Waiting3Controller.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -226,6 +226,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Images\Barber.png" />
     <Content Include="Content\Images\load.gif" />
+    <Content Include="Content\Images\SoftKonnectLogo Transparent.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -319,6 +320,11 @@
     <Content Include="Views\Role\RoleAssignment.cshtml" />
     <Content Include="Views\Role\UserRoles.cshtml" />
     <Content Include="Views\Account\SentMail.cshtml" />
+    <Content Include="Views\StoreType\Create.cshtml" />
+    <Content Include="Views\StoreType\Delete.cshtml" />
+    <Content Include="Views\StoreType\Edit.cshtml" />
+    <Content Include="Views\StoreType\Index.cshtml" />
+    <Content Include="Views\Role\RoleRequest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -327,7 +333,6 @@
     <Folder Include="Content\ShopImages\" />
     <Folder Include="Views\ServiceBasket\" />
     <Folder Include="Views\Shop\" />
-    <Folder Include="Views\Waiting2\" />
     <Folder Include="Views\Waiting3\" />
   </ItemGroup>
   <ItemGroup>

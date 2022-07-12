@@ -80,6 +80,14 @@
     <Compile Include="Migrations\202207111311223_Recent.designer.cs">
       <DependentUpon>202207111311223_Recent.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202207121509029_updateonStoreType.cs" />
+    <Compile Include="Migrations\202207121509029_updateonStoreType.designer.cs">
+      <DependentUpon>202207121509029_updateonStoreType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202207121527220_updateonProduct.cs" />
+    <Compile Include="Migrations\202207121527220_updateonProduct.designer.cs">
+      <DependentUpon>202207121527220_updateonProduct.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SQLRepository.cs" />
@@ -112,6 +120,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202207111311223_Recent.resx">
       <DependentUpon>202207111311223_Recent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202207121509029_updateonStoreType.resx">
+      <DependentUpon>202207121509029_updateonStoreType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202207121527220_updateonProduct.resx">
+      <DependentUpon>202207121527220_updateonProduct.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

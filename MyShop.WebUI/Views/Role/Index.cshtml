@@ -15,24 +15,26 @@
             <tr>
                 <td>
                     <table>
-
+                        @{int tot = Model.Count();
+                            int ind = 0;}
                         @foreach (var item in Model)
                         {
+                            ind++;
                             <tr>
-                                <td style="width:100%; border:dotted 1px;">
-                                    @item.Name
+                                <td class="text-left">
+                                   @ind @item.Name
                                 </td>
                             </tr>
                         }
                     </table>
                 </td>
-                <td align="right" style="color:#FFFFFF;padding-right:10px;">
+                <td align="right">
 
 
-                    <h3>   @Html.ActionLink("Click to Create New Role", "Create", "Role", new { @class = "btn btn-primary" }) </h3>
+                    <h3>   @Html.ActionLink("Click to Create New Role", "Create", "Role", null, new { @class = "btn btn-primary" }) </h3>
                 </td>
             </tr>
         </table>
     </div>
-    @Html.ActionLink("User Role", "RoleAssignment", "Role", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Assign Role to User", "RoleAssignment", "Role", null, new { @class = "btn btn-primary" })
 </div>
