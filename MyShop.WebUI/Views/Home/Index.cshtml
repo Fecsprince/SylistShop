@@ -23,26 +23,27 @@
                         <div class="row">
                             @foreach (var item in Model.Products)
                             {
-                            <div class="col-md-4" id="HomeIndex">
+                            <div class="col-xs-12 colsm-6 col-md-4 col-lg-4" >
 
-                                <div class="col-md-12">
+                                <div class="col-xs-6 col-sm-6 col-md-12 col-lg-12">
                                     <img class="img img-thumbnail" style="height:150px; width: 150px;" src="~/Content/ProductImages/@item.Image1" />
                                 </div>
 
 
-                                <div class="col-md-12">
+                                <div class="col-xs-6 col-sm-6 col-md-12 col-lg-12">
                                     @Html.ActionLink(item.Name, "Details", new { id = item.Id })
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-xs-6 col-sm-6 col-md-12 col-lg-12">
                                     <p>   <b>Product Category:</b>  @item.Category.Name</p>
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-xs-6 col-sm-6 col-md-12 col-lg-12">
                                     <b>Description</b>  <p>@item.Description</p>
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-xs-6 col-sm-6 col-md-12 col-lg-12">
                                     <h4><b>Price:</b>  $@item.Price</h4>
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-xs-6 col-sm-6 col-md-12 col-lg-12">
+                              
                                     <a href="@Url.Action("AddToBasket", "Basket", new { Id = item.Id })" class="btn btn-warning">Add to Cart</a>
                                     <br />
                                     <br />
@@ -57,36 +58,41 @@
                     {
                         <h2 id="guideBucket">Service List</h2>
 
-                        <div class="col-xs-12">
-                            @using (Html.BeginForm("Index", "Home", FormMethod.Get))
-                            {
-                                <label class="control-label">Sort Service By Location</label><br />
-                                <p>
-                                    <input type="search" class="form-control" id="serviceLocation" placeholder="E.g Kebbi, Ore, Owerri" name="serviceLocation" />
-                                    <br /><input type="submit" class="btn btn-primary" value="Search" />
-                                </p>
-                            }
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="panel">
+                                <div class="panel-body">
+                                    @using (Html.BeginForm("Index", "Home", FormMethod.Get))
+                                    {
+                                        <label class="control-label">Sort Service By Location</label><br />
+                                        <p>
+                                            <input type="search" class="form-control" id="serviceLocation" placeholder="E.g Kebbi, Ore, Owerri" name="serviceLocation" />
+                                            <br /><input type="submit" class="btn btn-primary" value="Search" />
+                                        </p>
+                                    }
+                                                            </div>
+                                                    </div>
                         </div>
                         foreach (var item in Model.services)
                         {
-                            <div class="col-md-3 " id="HomeIndex">
+                            <div class="col-xs-12 colsm-6 col-md-4 col-lg-4">
 
-                                <div class="col-md-12">
+                                <div class="col-xs-6 col-sm-6 col-md-12 col-lg-12">
                                     <img class="img img-thumbnail" style="height:150px; width: 150px;" src="~/Content/ServiceImages/@item.Image1" />
                                 </div>
 
-                                <div class="col-md-12">
-                                    <p> <b> @item.Name </b></p>
+                                <div class="col-xs-6 col-sm-6 col-md-12 col-lg-12">
+                                    <p>Service: <b> @item.Name </b></p>
                                 </div>
 
-                                <div class="col-md-12">
-                                    <a href="@Url.Action("Details","ShopManager", new {@id = item.ShopID })" class="control-label">@item.Shop.Name</a>
+                                <div class="col-xs-6 col-sm-6 col-md-12 col-lg-12">
+                                   Store: <a href="@Url.Action("Details","ShopManager", new {@id = item.ShopID })" class="control-label">@item.Shop.Name</a>
                                 </div>
 
-                                <div class="col-md-12">
+                                <div class="col-xs-6 col-sm-6 col-md-12 col-lg-12">
                                     <h4><b>Price:</b>  $@item.Price</h4>
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-xs-6 col-sm-6 col-md-12 col-lg-12">
+                                
                                     <a href="@Url.Action("BookNow","ServiceBooking", new {Id=item.Id})" class="btn btn-warning">Book Now</a>
                                     <br />
                                     <br />

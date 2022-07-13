@@ -14,6 +14,7 @@ using MyShop.WebUI.Models;
 namespace MyShop.WebUI.Controllers
 {
     [Authorize(Roles = "SuperAdmin,StoreManager")]
+    [OutputCache(Duration = 60)]
     public class ProductManagerController : Controller
     {
 

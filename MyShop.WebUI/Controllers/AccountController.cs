@@ -206,6 +206,108 @@ namespace MyShop.WebUI.Controllers
             return View(model);
         }
 
+
+        //GET
+        //UPDATE ACCOUNT
+
+        [HttpGet]
+        public ActionResult UpdateAccount(string Email)
+        {
+            var _user = con.Users.Where(x => x.Email == Email).ToList();
+
+            var user = (from us in _user
+                        join cu in customerRepo.Collection()
+                        on us.Id equals cu.UserId
+                        select new Customer()
+                        {
+                            FirstName = cu.FirstName,
+                            LastName = cu.LastName,
+                            City = cu.City,
+                            State = cu.State,
+                            Street = cu.Street,
+                            Zipcode = cu.Zipcode
+
+                        }).FirstOrDefault();
+            if (user != null)
+            {
+                return View(user);
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UpdateAccount(Customer model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = con.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault();
+
+                var dbCustomer = customerRepo.Collection().Where(x => x.Email == User.Identity.Name).FirstOrDefault();
+                if (dbCustomer != null)
+                {
+                    dbCustomer.FirstName = model.FirstName;
+                    dbCustomer.LastName = model.LastName;
+                    dbCustomer.Street = model.Street;
+                    dbCustomer.City = model.City;
+                    dbCustomer.State = model.State;
+                    dbCustomer.Zipcode = model.Zipcode;
+
+                    var update = customerRepo.Update(dbCustomer);
+                    if (update != null)
+                    {
+                        TempData["Msg"] = "Account Updated successfully!";
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        //UPDATE FAILED
+                        ViewBag.Msg = "Update Failed!";
+                    }
+                }
+                else
+                {
+                    //CUSTOMER DOES NOT EXIST ON DB
+                    //ADD CUSTOMER
+                    Customer customer = new Customer()
+                    {
+                        City = model.City,
+                        State = model.State,
+                        Zipcode = model.Zipcode,
+                        Email = user.Email,
+                        FirstName = model.FirstName,
+                        LastName = model.LastName,
+                        Street = model.Street,
+                        UserId = user.Id
+                    };
+
+                    var insert = customerRepo.Insert(customer);
+                    if (insert != null)
+                    {
+                        //INSERT SUCCEEDED
+                        TempData["Msg"] = "Customer record added successfully!";
+                    }
+                    else
+                    {
+                        //INSERT FAILED
+                        TempData["Msg"] = "Customer record failed to be committed!";
+                    }
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            else
+            {
+                //MODEL ENTRIES FAILED
+                ViewBag.Msg = "Please verify your entries and try again!";
+            }
+            return View(model);
+        }
+
+
         [AllowAnonymous]
         public ActionResult SentMail(string msg)
         {
@@ -217,8 +319,6 @@ namespace MyShop.WebUI.Controllers
             return RedirectToAction("Home", "Index");
 
         }
-
-        
 
 
         //
@@ -341,7 +441,7 @@ namespace MyShop.WebUI.Controllers
                     "Please check your email for verification.\n" + sendMsg.Message;
                 //return RedirectToAction("SentMail", new { @msg = msg });
 
-                return RedirectToAction("ForgotPasswordConfirmation", "Account", new {@msg = msg });
+                return RedirectToAction("ForgotPasswordConfirmation", "Account", new { @msg = msg });
             }
 
             // If we got this far, something failed, redisplay form

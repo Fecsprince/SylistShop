@@ -77,7 +77,8 @@ namespace MyShop.Services
         public void AddToBasket(HttpContextBase httpContext, string productId)
         {
             Basket basket = GetBasket(httpContext, true);
-            BasketItem item = basket.BasketItems.FirstOrDefault(i => i.ProductId == productId);
+
+            BasketItem item = basket.BasketItems.Where(i => i.ProductId == productId).FirstOrDefault();
 
             if (item == null)
             {

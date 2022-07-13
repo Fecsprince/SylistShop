@@ -7,8 +7,16 @@
 <div id="bucket">
     <h2 id="guideBucket">Service Schedule</h2>
     <div class="jumbotron">
-        <a href="@Url.Action("RescheduleBooking","ServiceBooking", new {@bookingId=Model.Id})" class="btn btn-warning">Reschedule Appointment</a>
-        <a href="@Url.Action("CancelBooking","ServiceBooking", new { @bookingId=Model.Id})" class="btn btn-warning">Cancel Booking</a>
+
+        @if (User.IsInRole("Customer"))
+        {
+            <a href="@Url.Action("RescheduleBooking","ServiceBooking", new {@bookingId=Model.Id})" class="btn btn-warning">Reschedule Appointment</a>
+            <a href="@Url.Action("CancelBooking","ServiceBooking", new { @bookingId=Model.Id})" class="btn btn-warning">Cancel Booking</a>
+        }
+        else
+        {
+            <a href="@Url.Action("CancelBooking","ServiceBooking", new { @bookingId=Model.Id})" class="btn btn-warning">Cancel Booking</a>
+        }
     </div>
     <hr />
     <dl class="dl-horizontal">

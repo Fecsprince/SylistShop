@@ -9,13 +9,16 @@
 {
     <p id="msg" style="display:none">@ViewBag.Msg</p>
 }
+<div id="bucket">
+    
+    <a href="@Url.Action("Create","ProductManager")" class="btn btn-primary">Add Product</a>
 
-@if (Model != null)
-{
-    <div id="bucket">
+
+    @if (Model != null)
+    {
+
         <h2>Product Listing</h2>
 
-        <a href="@Url.Action("Create","ProductManager")" class="btn btn-primary">Add Product</a>
         <br />
         <br />
 
@@ -71,8 +74,8 @@
 
             </table>
         </div>
-    </div>
-}
+    }
+</div>
 
 
 <script src="~/Scripts/jquery-1.10.2.js"></script>

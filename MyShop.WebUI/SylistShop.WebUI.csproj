@@ -325,6 +325,8 @@
     <Content Include="Views\StoreType\Edit.cshtml" />
     <Content Include="Views\StoreType\Index.cshtml" />
     <Content Include="Views\Role\RoleRequest.cshtml" />
+    <Content Include="Views\Account\UpdateAccount.cshtml" />
+    <Content Include="Views\Basket\ViewOrder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
