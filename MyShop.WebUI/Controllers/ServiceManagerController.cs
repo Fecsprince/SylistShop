@@ -37,6 +37,7 @@ namespace MyShop.WebUI.Controllers
             if (User.IsInRole("SuperAdmin"))
             {
                 services = context.Collection().ToList();
+                return View(services);
             }
             else
             {
@@ -45,14 +46,15 @@ namespace MyShop.WebUI.Controllers
                 if (shop != null)
                 {
                     services = context.Collection().Where(x => x.ShopID == shop.Id).ToList();
+                    return View(services);
                 }
                 else
                 {
-                    ViewBag.Msg = "ACCESS DENIED, NOT AUTHORIZED!";
+                    TempData["Msg"] = "You don't have store account!";
+                    return RedirectToAction("Index", "Home");
                 }
             }
-            
-            return View(services);
+
         }
 
 
@@ -68,7 +70,7 @@ namespace MyShop.WebUI.Controllers
             {
                 Service service = new Service()
                 {
-                    ShopID = shop.Id
+                    ShopID = shop.Id,
                 };
                 return View(service);
             }
@@ -316,6 +318,7 @@ namespace MyShop.WebUI.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult Details(string id)
         {
             if (id != null)
@@ -328,8 +331,8 @@ namespace MyShop.WebUI.Controllers
 
                         //GET USER
                         string shopName = "";
-                        var user = userContext.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault();
-                        var shop = shopContext.Collection().Where(x => x.UserID == user.Id).FirstOrDefault();
+                        //var user = userContext.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault();
+                        var shop = shopContext.Collection().Where(x => x.UserID == service.ShopID).FirstOrDefault();
 
                         if (shop != null)
                         {

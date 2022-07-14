@@ -45,14 +45,10 @@ namespace MyShop.WebUI.Controllers
             ApplicationUser user = new ApplicationUser();
 
 
-            if (TempData["Msg"] != null)
-            {
-                ViewBag.Msg = TempData["Msg"].ToString();
-            }
+           
             if (User.IsInRole("SuperAdmin"))
             {
                 prods = context.Collection();
-
             }
             else
             {
@@ -84,19 +80,36 @@ namespace MyShop.WebUI.Controllers
         [HttpGet]
         public ActionResult Create()
         {
+
+            //if (!User.IsInRole("SuperAdmin") && !User.IsInRole("StoreManager"))
+            //{
+            //    TempData["Msg"] = "You don't have store manager authorization!";
+            //    return RedirectToAction("Index", "Home");
+            //}
             //LOAD ALL CATEGORIES
             var categories = Catecontext.Collection();
             ViewBag.Categories = categories;
 
             //GET USER
             var user = userContext.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault();
-            Product prod = new Product()
+            //DOES USER HAVE STORE?
+            var store = shopcontext.Collection().FirstOrDefault(x => x.UserID == user.Id);
+            if (store != null)
             {
-                UserID = user.Id,
-                Image1 = "dd"
-            };
+                Product prod = new Product()
+                {
+                    UserID = store.UserID,
+                    Image1 = "dd"
+                };
+                return View(prod);
 
-            return View(prod);
+            }
+            else
+            {
+                TempData["Msg"] = "You don't have store account!";
+                return RedirectToAction("Index", "Home");
+            }
+
         }
 
 
@@ -112,10 +125,10 @@ namespace MyShop.WebUI.Controllers
             prod.Image2 = "";
 
             //GET SHOPOWNER_USER
-            var user = userContext.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault();
+            //var user = userContext.Users.Where(x => x.Id == prod.UserID).FirstOrDefault();
 
             //GET SHOP
-            var shopx = shopcontext.Collection().Where(x => x.UserID == user.Id).FirstOrDefault();
+            var shopx = shopcontext.Collection().Where(x => x.UserID == prod.UserID).FirstOrDefault();
             if (shopx != null)
             {
                 try
@@ -375,6 +388,7 @@ namespace MyShop.WebUI.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult Details(string id)
         {
             if (id != null)

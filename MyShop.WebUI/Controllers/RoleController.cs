@@ -202,7 +202,7 @@ namespace MyShop.WebUI.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [Authorize(Roles = "Customer, StoreManager,ShopManager")]
+        [AllowAnonymous]
         [HttpPost]
         public ActionResult RoleRequest(string Email, string Name)
         {

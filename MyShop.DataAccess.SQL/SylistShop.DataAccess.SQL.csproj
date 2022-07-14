@@ -56,37 +56,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataContext.cs" />
-    <Compile Include="Migrations\202207061236232_initial.cs" />
-    <Compile Include="Migrations\202207061236232_initial.designer.cs">
-      <DependentUpon>202207061236232_initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202207080646259_updatex.cs" />
-    <Compile Include="Migrations\202207080646259_updatex.designer.cs">
-      <DependentUpon>202207080646259_updatex.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202207091744089_updatexy.cs" />
-    <Compile Include="Migrations\202207091744089_updatexy.designer.cs">
-      <DependentUpon>202207091744089_updatexy.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202207101850058_latestux.cs" />
-    <Compile Include="Migrations\202207101850058_latestux.designer.cs">
-      <DependentUpon>202207101850058_latestux.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202207101920534_latestui.cs" />
-    <Compile Include="Migrations\202207101920534_latestui.designer.cs">
-      <DependentUpon>202207101920534_latestui.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202207111311223_Recent.cs" />
-    <Compile Include="Migrations\202207111311223_Recent.designer.cs">
-      <DependentUpon>202207111311223_Recent.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202207121509029_updateonStoreType.cs" />
-    <Compile Include="Migrations\202207121509029_updateonStoreType.designer.cs">
-      <DependentUpon>202207121509029_updateonStoreType.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202207121527220_updateonProduct.cs" />
-    <Compile Include="Migrations\202207121527220_updateonProduct.designer.cs">
-      <DependentUpon>202207121527220_updateonProduct.cs</DependentUpon>
+    <Compile Include="Migrations\202207141341449_initial.cs" />
+    <Compile Include="Migrations\202207141341449_initial.designer.cs">
+      <DependentUpon>202207141341449_initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -103,29 +75,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202207061236232_initial.resx">
-      <DependentUpon>202207061236232_initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202207080646259_updatex.resx">
-      <DependentUpon>202207080646259_updatex.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202207091744089_updatexy.resx">
-      <DependentUpon>202207091744089_updatexy.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202207101850058_latestux.resx">
-      <DependentUpon>202207101850058_latestux.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202207101920534_latestui.resx">
-      <DependentUpon>202207101920534_latestui.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202207111311223_Recent.resx">
-      <DependentUpon>202207111311223_Recent.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202207121509029_updateonStoreType.resx">
-      <DependentUpon>202207121509029_updateonStoreType.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202207121527220_updateonProduct.resx">
-      <DependentUpon>202207121527220_updateonProduct.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202207141341449_initial.resx">
+      <DependentUpon>202207141341449_initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

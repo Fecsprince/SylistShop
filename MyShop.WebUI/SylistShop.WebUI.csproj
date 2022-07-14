@@ -213,6 +213,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202207141345268_initial.cs" />
+    <Compile Include="Migrations\202207141345268_initial.designer.cs">
+      <DependentUpon>202207141345268_initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -355,6 +360,11 @@
       <Project>{6c319f64-523c-43bc-93c4-4fae2368c106}</Project>
       <Name>SylistShop.Services</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202207141345268_initial.resx">
+      <DependentUpon>202207141345268_initial.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

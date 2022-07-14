@@ -99,7 +99,7 @@ namespace MyShop.WebUI.Controllers
                     var add = bookingContext.Insert(model);
                     if (add != null)
                     {
-
+                        bookingContext.Commit();
                         //PROCESS EMAIL
                         var callbackUrl = Url.Action("ViewBooking", "ServiceBooking", new { @BookingId = add.Id }, protocol: Request.Url.Scheme);
 
@@ -224,7 +224,8 @@ namespace MyShop.WebUI.Controllers
                         Date = date,
                         Service = svc,
                         Shop = ShopName,
-                        Time = booking.AppointmentTime
+                        Time = booking.AppointmentTime,
+                        Id = booking.Id
                     };
 
                     return View(model);
